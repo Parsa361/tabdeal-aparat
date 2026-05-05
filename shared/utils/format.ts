@@ -3,26 +3,8 @@ export const toNumber = (value: unknown, fallback = 0): number => {
   return Number.isFinite(parsed) ? parsed : fallback
 }
 
-export const getDaysSinceLabel = (dateValue?: string | null): string => {
-  if (!dateValue) return 'نامشخص'
-
-  const parsedDate = new Date(dateValue)
-
-  if (Number.isNaN(parsedDate.getTime())) {
-    return dateValue
-  }
-
-  const now = Date.now()
-  const diffMs = now - parsedDate.getTime()
-
-  if (diffMs <= 0) return 'امروز'
-
-  const days = Math.floor(diffMs / (1000 * 60 * 60 * 24))
-
-  if (days === 0) return 'امروز'
-  if (days === 1) return '1 روز پیش'
-
-  return `${days} روز پیش`
+export function formatViewsCount(value: number): string {
+  return new Intl.NumberFormat('fa-IR').format(value)
 }
 
 export const normalizeTags = (value: unknown): string[] => {

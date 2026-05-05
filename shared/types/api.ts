@@ -1,37 +1,71 @@
-export interface AparatVideoListItemApi {
-  id: string | number
-  title?: string
-  username?: string
-  visit_cnt?: string | number
-  uid?: string
-  sender_name?: string
-  big_poster?: string
-  small_poster?: string
-  profilePhoto?: string
-  duration?: string | number
-  sdate?: string
-  descr?: string
-  hashtag?: string | string[]
-  like_cnt?: string | number
-  [key: string]: unknown
+export interface AparatCategoryVideoItem {
+  id: string
+  title: string
+  username: string
+  userid: string
+  visit_cnt: number
+  uid: string
+  sender_name: string
+  profilePhoto: string
+  small_poster: string
+  big_poster: string
+  duration: number
+  sdate: string
+  create_date: string
+  sdate_timediff: number
+  frame: string
 }
 
-export interface AparatVideoDetailApi extends AparatVideoListItemApi {
-  meta?: {
-    title?: string
-    description?: string
-    [key: string]: unknown
+export interface AparatCategoryVideosResponse {
+  videobysearch: AparatCategoryVideoItem[]
+  ui: {
+    pagingForward: string
+    pagingBack: string
   }
 }
 
-export interface AparatVideoByUserResponse {
-  videobyuser?: AparatVideoListItemApi[]
+export interface AparatVideoTag {
+  name: string
+  video_cnt: string
 }
 
-export interface AparatVideoBySearchResponse {
-  videobysearch?: AparatVideoListItemApi[]
+export interface AparatVideoDownloadItem {
+  text: string
+  size: string
+  profile: string
+  urls: string[]
 }
 
-export interface AparatVideoResponse {
-  video?: AparatVideoDetailApi
+export interface AparatVideoDetail {
+  id: string
+  title: string
+  username: string
+  userid: string
+  visit_cnt: number
+  uid: string
+  sender_name: string
+  big_poster: string
+  small_poster: string
+  profilePhoto: string
+  duration: number
+  sdate: string
+  create_date: string
+  sdate_timediff: number
+  frame: string
+  tags: AparatVideoTag[]
+  tag_str: string
+  description: string
+  like_cnt: number
+  file_link: string
+  file_link_all: AparatVideoDownloadItem[]
+}
+
+export interface AparatVideoDetailResponse {
+  video: AparatVideoDetail
+}
+
+export interface AparatUserProfileResponse {
+  user_info?: {
+    follower_cnt?: number | string
+  }
 }

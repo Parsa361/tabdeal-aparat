@@ -1,5 +1,5 @@
 import { normalizeVideoDetail } from '#shared/transformers/video'
-import type { AparatVideoResponse } from '#shared/types/api'
+import type { AparatVideoDetailResponse } from '#shared/types/api'
 import type { VideoDetail } from '#shared/types/video'
 import { aparatClient } from '#server/utils/aparat-client'
 
@@ -9,12 +9,12 @@ export default defineEventHandler(async (event): Promise<VideoDetail> => {
   if (!videohash) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Video id is required',
+      statusMessage: 'Video hash is required',
     })
   }
 
   try {
-    const response = await aparatClient<AparatVideoResponse>(
+    const response = await aparatClient<AparatVideoDetailResponse>(
       `/video/videohash/${encodeURIComponent(videohash)}`,
     )
 
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event): Promise<VideoDetail> => {
       })
     }
 
-    return normalizeVideoDetail(response.video)
+    return normalizeVideoDetail(response.video, null)
   } catch (error: unknown) {
     if (typeof error === 'object' && error !== null && 'statusCode' in error) {
       throw error

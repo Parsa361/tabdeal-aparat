@@ -1,32 +1,52 @@
-import type { AparatVideoDetailApi, AparatVideoListItemApi } from '../types/api'
+import type { AparatCategoryVideoItem, AparatVideoDetail } from '../types/api'
 import type { VideoDetail, VideoListItem } from '../types/video'
-import { getDaysSinceLabel, normalizeTags, toNumber } from '../utils/format'
+import { normalizeTags, toNumber } from '../utils/format'
 
-export const normalizeVideoListItem = (item: AparatVideoListItemApi): VideoListItem => {
+export function toVideoListItem(item: AparatCategoryVideoItem): VideoListItem {
   return {
-    videohash: String(item.id ?? ''),
-    uid: String(item.uid ?? ''),
-    title: String(item.title ?? '').trim(),
-    channelUsername: String(item.username ?? '').trim(),
-    channelName: String(item.sender_name ?? item.username ?? '').trim(),
+    videohash: item.uid,
+    title: item.title,
+    channelName: item.sender_name || item.username,
     thumbnailUrl: String(item.big_poster ?? item.small_poster ?? ''),
-    channelAvatarUrl: item.profilePhoto ? String(item.profilePhoto) : null,
-    viewsCount: toNumber(item.visit_cnt, 0),
-    durationSeconds: toNumber(item.duration, 0),
-    publishedAtLabel: getDaysSinceLabel(item.sdate ?? null),
+    channelAvatarUrl: item.profilePhoto,
+    viewsCount: item.visit_cnt,
+    publishedAt: item.create_date || null,
   }
 }
 
-export const normalizeVideoDetail = (item: AparatVideoDetailApi): VideoDetail => {
-  const base = normalizeVideoListItem(item)
+function resolveVideoFileUrl(video: AparatVideoDetail): string | null {
+  const firstDownloadUrl = video.file_link_all?.[0]?.urls?.[0]
 
+  if (firstDownloadUrl) {
+    return firstDownloadUrl
+  }
+
+  if (video.file_link) {
+    return video.file_link
+  }
+
+  return null
+}
+
+export function normalizeVideoDetail(
+  video: AparatVideoDetail,
+  followersCount: number | null,
+): VideoDetail {
   return {
-    ...base,
-    description: String(item.descr ?? '').trim(),
-    tags: normalizeTags(item.hashtag),
-    likesCount:
-      item.like_cnt === undefined || item.like_cnt === null ? null : toNumber(item.like_cnt, 0),
-    followersCount: null,
-    isLiked: null,
+    videohash: video.uid,
+    title: video.title,
+    channelName: video.sender_name || video.username,
+    channelAvatarUrl: video.profilePhoto,
+    thumbnailUrl: video.big_poster,
+    videoEmbedUrl: video.frame,
+    videoFileUrl: resolveVideoFileUrl(video),
+    followersCount,
+    viewsCount: video.visit_cnt,
+    publishedAt: video.create_date || null,
+    tags: (video.tags || []).map((tag) => ({
+      name: tag.name,
+    })),
+    description: video.description || '',
+    likesCount: video.like_cnt ?? 0,
   }
 }

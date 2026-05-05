@@ -1,22 +1,31 @@
 export interface VideoListItem {
   videohash: string
-  uid: string
   title: string
-  channelUsername: string
   channelName: string
   thumbnailUrl: string
-  channelAvatarUrl: string | null
+  channelAvatarUrl: string
   viewsCount: number
-  durationSeconds: number
-  publishedAtLabel: string
+  publishedAt: string | null
 }
 
-export interface VideoDetail extends VideoListItem {
-  description: string
-  tags: string[]
-  likesCount: number | null
+export interface VideoTag {
+  name: string
+}
+
+export interface VideoDetail {
+  videohash: string
+  title: string
+  channelName: string
+  channelAvatarUrl: string
+  thumbnailUrl: string
+  videoEmbedUrl: string
+  videoFileUrl: string | null
   followersCount: number | null
-  isLiked: boolean | null
+  viewsCount: number
+  publishedAt: string | null
+  tags: VideoTag[]
+  description: string
+  likesCount: number
 }
 
 export interface VideosListResponse {
