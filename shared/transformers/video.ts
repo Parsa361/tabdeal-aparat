@@ -36,7 +36,7 @@ export function normalizeVideoDetail(
     title: video.title,
     channelName: video.sender_name || video.username,
     channelAvatarUrl: video.profilePhoto,
-    thumbnailUrl: video.big_poster,
+    thumbnailUrl: String(video.big_poster ?? video.small_poster ?? ''),
     videoEmbedUrl: video.frame,
     videoFileUrl: resolveVideoFileUrl(video),
     followersCount,
