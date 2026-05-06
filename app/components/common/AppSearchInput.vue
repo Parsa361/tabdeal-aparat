@@ -12,9 +12,9 @@ defineProps<{
     <input
       v-model="modelValue"
       type="search"
-      :placeholder="placeholder || 'جستجو...'"
+      :placeholder="placeholder || 'جستجو ویدیو...'"
       :disabled="disabled"
-      class="w-full rounded-lg border border-zinc-300 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:border-zinc-900"
+      class="w-full rounded-sm bg-[#3B3D3F] px-4 py-3 text-sm outline-none transition placeholder:text-white focus:border-zinc-900"
     />
   </div>
 </template>
