@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import AppEmptyState from '~/components/common/AppEmptyState.vue'
-import AppErrorState from '~/components/common/AppErrorState.vue'
-import AppSearchInput from '~/components/common/AppSearchInput.vue'
-import AppSkeleton from '~/components/common/AppSkeleton.vue'
-import VideoGrid from '~/components/video/VideoGrid.vue'
-
 const route = useRoute()
 const router = useRouter()
+
+definePageMeta({
+  showHeaderSearch: true,
+})
 
 const searchInput = ref(String(route.query.search || ''))
 
@@ -49,29 +47,29 @@ useSeoMeta({
         <p class="text-sm text-zinc-500">برای نمایش نتایج، حداقل ۳ کاراکتر وارد کنید.</p>
       </div>
 
-      <AppSearchInput v-model="searchInput" placeholder="مثلاً آموزش Vue" />
+      <CommonAppSearchInput v-model="searchInput" placeholder="مثلاً آموزش Vue" />
     </div>
 
     <div v-if="!shouldFetch" class="mt-10">
-      <AppEmptyState
+      <CommonAppEmptyState
         title="جستجو را شروع کنید"
         description="برای مشاهده نتایج، حداقل ۳ کاراکتر وارد کنید."
       />
     </div>
 
     <div v-else-if="pending" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      <AppSkeleton v-for="item in 6" :key="item" class="aspect-[16/12]" />
+      <CommonAppSkeleton v-for="item in 6" :key="item" class="aspect-[16/12]" />
     </div>
 
     <div v-else-if="error">
-      <AppErrorState
+      <CommonAppErrorState
         title="خطا در دریافت لیست ویدیوها"
         description="لطفاً چند لحظه دیگر دوباره تلاش کنید."
       />
     </div>
 
     <div v-else-if="isEmpty">
-      <AppEmptyState
+      <CommonAppEmptyState
         title="نتیجه‌ای پیدا نشد"
         description="عبارت جستجو را تغییر دهید و دوباره تلاش کنید."
       />

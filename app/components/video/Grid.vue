@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { VideoListItem } from '#shared/types/video'
-import VideoCard from './VideoCard.vue'
 
 defineProps<{
   items: VideoListItem[]
