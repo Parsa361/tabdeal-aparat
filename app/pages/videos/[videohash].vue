@@ -88,14 +88,7 @@ const likesText = computed(() => {
 
         <div class="flex flex-wrap items-center gap-3 text-sm text-slate-500">
           <span>{{ viewsAndDateText }} • </span>
-          <section v-if="video.tags.length" class="flex flex-wrap items-center gap-2">
-            <CommonAppTag
-              v-for="(tag, key) in video.tags"
-              :key="key"
-              :label="tag.name"
-              :to="`/search?q=${encodeURIComponent(tag.name)}`"
-            />
-          </section>
+          <VideoTagList :tags="video.tags" />
         </div>
       </header>
 
