@@ -3,7 +3,7 @@ import type { VideosListResponse } from '#shared/types/video'
 export function useVideos(search: Ref<string> | ComputedRef<string>) {
   const normalizedSearch = computed(() => search.value.trim())
 
-  const shouldFetch = computed(() => normalizedSearch.value.length >= 3)
+  const shouldFetch = computed(() => normalizedSearch.value.length >= 2)
 
   const { data, pending, error, refresh } = useFetch<VideosListResponse>('/api/videos', {
     query: computed(() => ({

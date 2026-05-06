@@ -1,10 +1,16 @@
 <script setup lang="ts">
 const modelValue = defineModel<string>({ default: '' })
 
-defineProps<{
-  placeholder?: string
-  disabled?: boolean
-}>()
+withDefaults(
+  defineProps<{
+    placeholder?: string
+    disabled?: boolean
+  }>(),
+  {
+    placeholder: 'جستجو ویدیو...',
+    disabled: false,
+  },
+)
 </script>
 
 <template>
@@ -12,9 +18,9 @@ defineProps<{
     <input
       v-model="modelValue"
       type="search"
-      :placeholder="placeholder || 'جستجو ویدیو...'"
+      :placeholder="placeholder"
       :disabled="disabled"
-      class="w-full rounded-sm bg-[#3B3D3F] px-4 py-3 text-sm outline-none transition placeholder:text-white focus:border-zinc-900"
+      class="h-12 w-full rounded-[4px] bg-[#3B3D3F] px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/70 disabled:cursor-not-allowed disabled:opacity-50"
     />
   </div>
 </template>

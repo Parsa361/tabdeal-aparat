@@ -4,6 +4,12 @@ const route = useRoute()
 const shouldShowSearch = computed(() => {
   return route.meta.showHeaderSearch === true
 })
+
+const { searchInput, submitSearch } = useHeaderSearch()
+
+async function onSubmit() {
+  await submitSearch()
+}
 </script>
 
 <template>
@@ -14,13 +20,25 @@ const shouldShowSearch = computed(() => {
     />
 
     <div class="flex flex-col relative z-10 app-container">
-      <div class="my-3 lg:mr-9">
+      <div class="mt-3 lg:mr-9">
         <CommonAppLogo />
       </div>
 
-      <div v-if="shouldShowSearch" class="w-full pt-2 pb-4 lg:pb-6 lg:pt-3">
-        <CommonAppSearchInput />
-      </div>
+      <form
+        v-if="shouldShowSearch"
+        class="mt-[28px] mb-6 flex w-full flex-col gap-4 sm:flex-row sm:items-center px-3 py-4 lg:p-4 rounded-lg bg-[#2C2E30]"
+        @submit.prevent="onSubmit"
+      >
+        <div class="w-full">
+          <CommonAppSearchInput v-model="searchInput" placeholder="جستجو ویدیو..." />
+        </div>
+
+        <CommonAppButton type="submit" label="جستجو">
+          <template #icon>
+            <IconsSearch />
+          </template>
+        </CommonAppButton>
+      </form>
     </div>
   </header>
 </template>

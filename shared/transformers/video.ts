@@ -1,6 +1,5 @@
 import type { AparatCategoryVideoItem, AparatVideoDetail } from '../types/api'
 import type { VideoDetail, VideoListItem } from '../types/video'
-import { normalizeTags, toNumber } from '../utils/format'
 
 export function toVideoListItem(item: AparatCategoryVideoItem): VideoListItem {
   return {
