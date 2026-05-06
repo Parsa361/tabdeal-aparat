@@ -6,7 +6,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="rounded-2xl border border-red-200 bg-red-50 p-6 text-red-700">
+  <div class="rounded-2xl border border-red-200 p-6 text-red-500">
     <h2 class="font-semibold">
       {{ title || 'خطایی رخ داده است' }}
     </h2>

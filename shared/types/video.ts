@@ -32,4 +32,5 @@ export interface VideosListResponse {
   items: VideoListItem[]
   perPage: number
   hasMore: boolean
+  source: 'default' | 'search'
 }

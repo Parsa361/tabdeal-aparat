@@ -7,7 +7,7 @@ definePageMeta({
 
 const searchQuery = computed(() => String(route.query.search || '').trim())
 
-const { items, pending, error, isEmpty, shouldFetch } = useVideos(searchQuery)
+const { items, pending, error, isEmpty, isSearchMode } = useVideos(searchQuery)
 
 useSeoMeta({
   title: 'Tabdeal`s Aparat Videos',
@@ -17,11 +17,7 @@ useSeoMeta({
 
 <template>
   <section>
-    <div v-if="!shouldFetch" class="mt-10">
-      <CommonAppEmptyState title="برای مشاهده نتایج، حداقل ۲ کاراکتر وارد کنید." />
-    </div>
-
-    <div v-else-if="pending" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div v-if="pending" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       <CommonAppSkeleton v-for="item in 6" :key="item" class="aspect-[16/12]" />
     </div>
 
@@ -34,8 +30,12 @@ useSeoMeta({
 
     <div v-else-if="isEmpty">
       <CommonAppEmptyState
-        title="نتیجه‌ای پیدا نشد"
-        description="عبارت جستجو را تغییر دهید و دوباره تلاش کنید."
+        :title="isSearchMode ? 'نتیجه‌ای پیدا نشد' : 'ویدیویی برای نمایش وجود ندارد'"
+        :description="
+          isSearchMode
+            ? 'عبارت جستجو را تغییر دهید و دوباره تلاش کنید.'
+            : 'در حال حاضر لیست ویدیوها خالی است.'
+        "
       />
     </div>
 

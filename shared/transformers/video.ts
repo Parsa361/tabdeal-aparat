@@ -1,7 +1,7 @@
-import type { AparatCategoryVideoItem, AparatVideoDetail } from '../types/api'
+import type { AparatVideoItem, AparatVideoDetail } from '../types/api'
 import type { VideoDetail, VideoListItem } from '../types/video'
 
-export function toVideoListItem(item: AparatCategoryVideoItem): VideoListItem {
+export function toVideoListItem(item: AparatVideoItem): VideoListItem {
   return {
     videohash: item.uid,
     title: item.title,

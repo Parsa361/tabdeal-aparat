@@ -1,4 +1,4 @@
-export interface AparatCategoryVideoItem {
+export interface AparatVideoItem {
   id: string
   title: string
   username: string
@@ -16,12 +16,19 @@ export interface AparatCategoryVideoItem {
   frame: string
 }
 
+export interface AparatPagingUi {
+  pagingForward?: string | boolean | number | null
+  [key: string]: unknown
+}
+
+export interface AparatVideoBySearchResponse {
+  videobysearch: AparatVideoItem[]
+  ui?: AparatPagingUi
+}
+
 export interface AparatCategoryVideosResponse {
-  videobysearch: AparatCategoryVideoItem[]
-  ui: {
-    pagingForward: string
-    pagingBack: string
-  }
+  categoryvideos: AparatVideoItem[]
+  ui?: AparatPagingUi
 }
 
 export interface AparatVideoTag {
