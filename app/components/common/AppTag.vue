@@ -8,5 +8,5 @@ const props = defineProps<{
 <template>
   <NuxtLink v-if="to" :to="to" class="inline-flex text-sm text-[#2EC0FF]"> #{{ label }} </NuxtLink>
 
-  <span v-else class="inline-flex rounded-full text-sm text-[#2EC0FF]"> #{{ label }} </span>
+  <span v-else class="inline-flex text-sm text-[#2EC0FF]"> #{{ label }} </span>
 </template>
