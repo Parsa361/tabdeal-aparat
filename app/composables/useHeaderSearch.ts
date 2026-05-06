@@ -1,3 +1,5 @@
+const MIN_SEARCH_LENGTH = 2
+
 export function useHeaderSearch() {
   const route = useRoute()
   const router = useRouter()
@@ -18,7 +20,7 @@ export function useHeaderSearch() {
     const normalized = searchInput.value.trim()
     const nextQuery = { ...route.query }
 
-    if (normalized) {
+    if (normalized.length >= MIN_SEARCH_LENGTH) {
       nextQuery.search = normalized
     } else {
       delete nextQuery.search
