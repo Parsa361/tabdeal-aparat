@@ -12,3 +12,13 @@ export function parseAparatResponse<T>(rawResponse: unknown): T {
     })
   }
 }
+
+export function parsePositiveInteger(value: unknown, fallback: number): number {
+  const parsedValue = Number(value)
+
+  if (!Number.isFinite(parsedValue) || parsedValue < 1) {
+    return fallback
+  }
+
+  return Math.floor(parsedValue)
+}

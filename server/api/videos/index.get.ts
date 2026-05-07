@@ -1,58 +1,86 @@
 import type { AparatCategoryVideosResponse, AparatVideoBySearchResponse } from '#shared/types/api'
 import { toVideoListItem } from '#shared/transformers/video'
-import { parseAparatResponse } from '~~/server/utils/parse-response'
+import { parseAparatResponse, parsePositiveInteger } from '#server/utils/parsing'
+import { normalizeAparatCursor } from '#server/utils/normalized-cursor'
 
 const MIN_SEARCH_LENGTH = 2
 const DEFAULT_PER_PAGE = 9
+const DEFAULT_PAGE = 1
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event)
 
-  const perPage = normalizePerPage(query.perPage)
+  const page = parsePositiveInteger(query.page, DEFAULT_PAGE)
+  const perPage = parsePositiveInteger(query.perPage, DEFAULT_PER_PAGE)
   const rawSearch = String(query.search || '').trim()
 
   const isSearchMode = rawSearch.length >= MIN_SEARCH_LENGTH
 
-  if (isSearchMode) {
-    const response = await aparatClient<AparatVideoBySearchResponse>(
-      `/videoBySearch/text/${encodeURIComponent(rawSearch)}/perpage/${perPage}`,
-    )
+  const rawCursor = typeof query.cursor === 'string' ? query.cursor.trim() : ''
+  const hasCursor = rawCursor.length > 0
+  const cursorEndpoint = hasCursor ? normalizeAparatCursor(rawCursor) : null
 
-    console.log('Aparat searchVideos ui:', response.ui)
+  if (hasCursor && !cursorEndpoint) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Invalid Aparat pagination cursor',
+    })
+  }
+
+  if (isSearchMode) {
+    const endpoint =
+      cursorEndpoint ?? `/videoBySearch/text/${encodeURIComponent(rawSearch)}/perpage/${perPage}`
+
+    const rawResponse = await aparatClient<unknown>(endpoint)
+
+    const response = parseAparatResponse<Partial<AparatVideoBySearchResponse>>(rawResponse)
+    const videos = response.videobysearch
+
+    // There is a problem here
+    // We can't use pagination on search mode because the API needs user to be authed
+    if (!Array.isArray(videos)) {
+      console.error('[Invalid Aparat search response]:', response)
+
+      throw createError({
+        statusCode: 502,
+        statusMessage: 'Invalid response from Aparat search API',
+      })
+    }
 
     return {
-      items: response.videobysearch.map(toVideoListItem),
+      items: videos.map(toVideoListItem),
+      page,
       perPage,
       hasMore: Boolean(response.ui?.pagingForward),
-      source: 'search' as const,
+      pagingForward: response.ui?.pagingForward ?? null,
+      pagingBack: response.ui?.pagingBack ?? null,
+      source: 'search',
     }
   }
 
-  const rawResponse = await aparatClient<unknown>(`/categoryVideos/perpage/${perPage}`)
-  const response = parseAparatResponse<AparatCategoryVideosResponse>(rawResponse)
+  const endpoint = cursorEndpoint ?? `/categoryVideos/perpage/${perPage}`
+
+  const rawResponse = await aparatClient<unknown>(endpoint)
+
+  const response = parseAparatResponse<Partial<AparatCategoryVideosResponse>>(rawResponse)
+  const categoryVideos = response.categoryvideos
+
+  if (!Array.isArray(categoryVideos)) {
+    console.error('[Invalid Aparat categoryVideos response]:', response)
+
+    throw createError({
+      statusCode: 502,
+      statusMessage: 'Invalid response from Aparat categoryVideos API',
+    })
+  }
 
   return {
-    items: response.categoryvideos?.map(toVideoListItem),
+    items: categoryVideos.map(toVideoListItem),
+    page,
     perPage,
     hasMore: Boolean(response.ui?.pagingForward),
-    source: 'default' as const,
+    pagingForward: response.ui?.pagingForward ?? null,
+    pagingBack: response.ui?.pagingBack ?? null,
+    source: 'default',
   }
 })
-
-function normalizePerPage(value: unknown) {
-  const parsed = Number(value ?? DEFAULT_PER_PAGE)
-
-  if (!Number.isFinite(parsed)) {
-    return DEFAULT_PER_PAGE
-  }
-
-  if (parsed < 1) {
-    return DEFAULT_PER_PAGE
-  }
-
-  if (parsed > 50) {
-    return 50
-  }
-
-  return Math.floor(parsed)
-}

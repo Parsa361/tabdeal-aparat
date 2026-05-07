@@ -7,7 +7,12 @@ definePageMeta({
 
 const searchQuery = computed(() => String(route.query.search || '').trim())
 
-const { items, pending, error, isEmpty, isSearchMode } = useVideos(searchQuery)
+const { items, pending, error, isSearchMode, hasMore, currentPage, handlePaginationChange } =
+  await useVideos(searchQuery)
+
+const isEmpty = computed(() => {
+  return !pending.value && items.value.length === 0 && !error.value
+})
 
 useSeoMeta({
   title: 'Tabdeal`s Aparat Videos',
@@ -39,6 +44,15 @@ useSeoMeta({
       />
     </div>
 
-    <VideoGrid v-else :items="items" />
+    <section v-else>
+      <VideoGrid :items="items" />
+
+      <CommonAppPagination
+        v-if="!isSearchMode"
+        :current-page="currentPage"
+        :has-more="hasMore"
+        @change="handlePaginationChange"
+      />
+    </section>
   </section>
 </template>

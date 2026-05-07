@@ -26,6 +26,9 @@ export function useHeaderSearch() {
       delete nextQuery.search
     }
 
+    // reset pagination when search changes
+    delete nextQuery.page
+
     await router.replace({
       query: nextQuery,
     })
