@@ -34,7 +34,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <section>
+  <section class="pt-8">
     <div v-if="pending" class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
       <CommonAppSkeleton v-for="item in 6" :key="item" class="aspect-[16/9]" />
     </div>

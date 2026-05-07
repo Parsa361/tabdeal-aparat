@@ -32,8 +32,8 @@ const likesText = computed(() => {
 </script>
 
 <template>
-  <section class="border border-[#404244] rounded-xl mx-auto max-w-5xl p-4 my-8">
-    <div v-if="pending" class="text-sm text-slate-500">در حال دریافت اطلاعات ویدیو...</div>
+  <section class="border border-border-default rounded-xl p-4">
+    <div v-if="pending" class="text-sm text-white">در حال دریافت اطلاعات ویدیو...</div>
 
     <div
       v-else-if="error"
@@ -55,8 +55,8 @@ const likesText = computed(() => {
         </div>
       </section>
 
-      <header class="space-y-4">
-        <h1 class="text-xl font-bold leading-8 text-slate-900 md:text-2xl">
+      <header class="space-y-5">
+        <h1 class="text-xl lg:text-2xl typography-video-title">
           {{ video.title }}
         </h1>
 
@@ -69,10 +69,10 @@ const likesText = computed(() => {
               loading="lazy"
             />
             <div class="min-w-0">
-              <p class="text-sm font-semibold text-slate-900">
+              <p class="text-md lg:text-lg typography-channel-name">
                 {{ video.channelName }}
               </p>
-              <p class="text-sm text-slate-500">
+              <p class="text-sm lg:text-md typography-video-meta">
                 {{ followersText }}
               </p>
             </div>
@@ -86,14 +86,14 @@ const likesText = computed(() => {
           </div>
         </div>
 
-        <div class="flex flex-wrap items-center gap-3 text-sm text-slate-500">
-          <span>{{ viewsAndDateText }} • </span>
+        <div class="flex flex-wrap items-center gap-3 typography-video-meta">
+          <span class="text-sm lg:text-md">{{ viewsAndDateText }} • </span>
           <VideoTagList :tags="video.tags" />
         </div>
       </header>
 
       <section>
-        <p class="whitespace-pre-line text-sm leading-7 text-slate-600">
+        <p class="text-text-description">
           {{ video.description || 'توضیحی برای این ویدیو ثبت نشده است.' }}
         </p>
       </section>

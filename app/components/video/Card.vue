@@ -38,7 +38,7 @@ const publishedText = computed(() => {
 <template>
   <NuxtLink
     :to="`/videos/${video.videohash}`"
-    class="block overflow-hidden rounded-lg border border-[#404244] transition hover:shadow-md"
+    class="block overflow-hidden rounded-lg border border-border-default transition hover:shadow-md"
   >
     <div class="space-y-4 p-4">
       <div class="relative aspect-video overflow-hidden rounded-[8px] bg-[#999C9F52]">
@@ -65,7 +65,7 @@ const publishedText = computed(() => {
       </div>
 
       <div>
-        <h3 class="line-clamp-2 text-sm font-semibold leading-6">
+        <h3 class="text-lg lg:text-xl typography-video-title">
           {{ video.title }}
         </h3>
 
@@ -77,12 +77,12 @@ const publishedText = computed(() => {
             loading="lazy"
             @error="($event.target as HTMLImageElement).src = '/images/channel-avatar-default.svg'"
           />
-          <span class="text-sm text-[#EAEAEA]">
+          <span class="text-md lg:text-lg typography-channel-name">
             {{ video.channelName }}
           </span>
         </div>
 
-        <div class="mt-3 flex items-center gap-2 text-xs text-[#AEAEAE]">
+        <div class="mt-3 flex items-center gap-2 text-sm lg:text-md typography-video-meta">
           <span>{{ viewsText }}</span>
           <span>-</span>
           <span :title="publishedTitle">{{ publishedText }}</span>
