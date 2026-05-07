@@ -1,14 +1,24 @@
-export function formatRelativeTime(dateInput: string | Date): string {
+export function normalizeDateInput(dateInput: string | Date): Date | null {
   const normalized = typeof dateInput === 'string' ? dateInput.replace(' ', 'T') : dateInput
 
-  const target = new Date(normalized).getTime()
+  const date = new Date(normalized)
 
-  if (Number.isNaN(target)) {
+  if (Number.isNaN(date.getTime())) {
+    return null
+  }
+
+  return date
+}
+
+export function formatRelativeTime(dateInput: string | Date, referenceNow = Date.now()): string {
+  const date = normalizeDateInput(dateInput)
+
+  if (!date) {
     return ''
   }
 
-  const now = Date.now()
-  const diffMs = now - target
+  const target = date.getTime()
+  const diffMs = referenceNow - target
 
   if (diffMs < 0) {
     return 'لحظاتی پیش'
@@ -29,4 +39,18 @@ export function formatRelativeTime(dateInput: string | Date): string {
   if (diffMs < year) return `${Math.floor(diffMs / month)} ماه پیش`
 
   return `${Math.floor(diffMs / year)} سال پیش`
+}
+
+export function formatAbsoluteTime(dateInput: string | Date): string {
+  const date = normalizeDateInput(dateInput)
+
+  if (!date) {
+    return ''
+  }
+
+  return new Intl.DateTimeFormat('fa-IR', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+    timeZone: 'Asia/Tehran',
+  }).format(date)
 }

@@ -6,6 +6,7 @@ export interface VideoListItem {
   channelAvatarUrl: string
   viewsCount: number
   publishedAt: string | null
+  duration: number
 }
 
 export interface VideoTag {
@@ -32,5 +33,8 @@ export interface VideosListResponse {
   items: VideoListItem[]
   perPage: number
   hasMore: boolean
+  pagingForward: string | null
+  pagingBack: string | null
+  page: number
   source: 'default' | 'search'
 }

@@ -10,6 +10,7 @@ export function toVideoListItem(item: AparatVideoItem): VideoListItem {
     channelAvatarUrl: item.profilePhoto,
     viewsCount: item.visit_cnt,
     publishedAt: item.create_date || null,
+    duration: item.duration,
   }
 }
 
