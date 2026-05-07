@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const route = useRoute()
+const listSectionRef = ref<HTMLElement | null>(null)
 
 definePageMeta({
   showHeaderSearch: true,
@@ -14,6 +15,18 @@ const isEmpty = computed(() => {
   return !pending.value && items.value.length === 0 && !error.value
 })
 
+async function onPaginationChange(page: number) {
+  await handlePaginationChange(page)
+  await nextTick()
+
+  if (listSectionRef.value) {
+    smoothScrollToElement(listSectionRef.value, {
+      duration: 500,
+      offset: 16,
+    })
+  }
+}
+
 useSeoMeta({
   title: 'Tabdeal`s Aparat Videos',
   description: 'Search and explore Tabdeal`s Aparat videos',
@@ -22,8 +35,8 @@ useSeoMeta({
 
 <template>
   <section>
-    <div v-if="pending" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      <CommonAppSkeleton v-for="item in 6" :key="item" class="aspect-[16/12]" />
+    <div v-if="pending" class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <CommonAppSkeleton v-for="item in 6" :key="item" class="aspect-[16/9]" />
     </div>
 
     <div v-else-if="error">
@@ -44,14 +57,14 @@ useSeoMeta({
       />
     </div>
 
-    <section v-else>
+    <section v-else ref="listSectionRef">
       <VideoGrid :items="items" />
 
       <CommonAppPagination
         v-if="!isSearchMode"
         :current-page="currentPage"
         :has-more="hasMore"
-        @change="handlePaginationChange"
+        @change="onPaginationChange"
       />
     </section>
   </section>
