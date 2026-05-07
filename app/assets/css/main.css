@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'IRANSans';
+  src: url('~/assets/fonts/IRANSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IRANSans';
+  src: url('~/assets/fonts/IRANSans-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-sans: 'IRANSans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Text colors */
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #eaeaea;
+  --color-text-muted: #aeaeae;
+  --color-text-description: #e2e2e2;
+
+  /* Border colors */
+  --color-border-default: #404244;
+}
+
+/* Background base for entire app */
+html,
+body {
+  background-color: #2c2e30;
+  min-height: 100%;
+  color: white;
+  font-family: var(--font-sans);
+}
+
+.app-container {
+  width: 100%;
+  max-width: 1680px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+@media (min-width: 1024px) {
+  .app-container {
+    padding-left: 120px;
+    padding-right: 120px;
+  }
+}
+
+@layer components {
+  .typography-video-title {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0;
+    color: var(--color-text-primary);
+  }
+
+  .typography-channel-name {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0;
+    color: var(--color-text-secondary);
+  }
+
+  .typography-video-description {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1;
+    letter-spacing: 0;
+    color: var(--color-text-description);
+  }
+
+  .typography-video-meta {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0;
+    color: var(--color-text-muted);
+  }
+}
