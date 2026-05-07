@@ -26,7 +26,7 @@ async function onSubmit() {
 
       <form
         v-if="shouldShowSearch"
-        class="mt-[28px] mb-6 flex w-full flex-col gap-4 sm:flex-row sm:items-center px-3 py-4 lg:p-4 rounded-lg bg-[#2C2E30]"
+        class="mt-[28px] mb-6 flex w-full gap-4 sm:flex-row sm:items-center px-3 py-4 lg:p-4 rounded-lg bg-[#2C2E30]"
         @submit.prevent="onSubmit"
       >
         <div class="w-full">
